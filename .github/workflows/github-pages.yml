@@ -1,57 +1,40 @@
-name: GitHub Pages
+# This is a basic workflow to help you get started with Actions
 
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push events for the dev branch
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # This workflow contains a single job called "build"
   build:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v2
+    # Checks-out your repository under $GITHUB_WORKSPACE, so marp-action can access it
+    - uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
+    - name: Build & Deploy to GitHub Pages
+      env: 
+        # You may wish to customize MARP_ARGS
+        # See https://github.com/marp-team/marp-cli#basic-usage for more details
+        # For a multi-page site, try `MARP_ARGS: "-I slides/ --output dist/"`
+        # Check examples for more: https://github.com/ralexander-phi/test-marp-action/blob/dev/README.md#example-sites
+        # But to keep things simple, let's just convert a single README.md into index.html
+        MARP_ARGS: "prez.md -o index.html"
 
-      - name: Detect Node version from .nvmrc
-        id: node_version
-        run: echo "::set-output name=nvmrc::$(cat .nvmrc)"
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        PUBLISH_TO_BRANCH: gh-pages
+        
+        # You'll want to set this to your domain
+        #BASE_URL: https://alexsci.com/test-marp-action/
 
-      - name: Install Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ steps.node_version.outputs.nvmrc }}
-
-      - uses: actions/cache@v1
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Install dependencies
-        run: |
-          npm ci
-
-      - name: Build Marp slide deck
-        run: |
-          npm run build
-          touch ./dist/.nojekyll
-        env:
-          # Please update URL if you want to use custom domain
-          URL: https://${{ github.event.repository.owner.name }}.github.io/${{ github.event.repository.name }}
-
-          # Recommend to set lang for your deck to get better rendering for Open Graph image
-          LANG: fr-FR
-
-      - name: Deploy to GitHub pages
-        uses: JamesIves/github-pages-deploy-action@releases/v3
-        with:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: dist
+      # consider using a tagged release here
+      # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsuses
+      uses: ralexander-phi/marp-action@master
