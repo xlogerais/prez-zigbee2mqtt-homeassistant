@@ -15,7 +15,7 @@ theme: default
 
 ---
 
-## Domotique
+## Domotique : pour quoi faire ?
 
 * Pour controller ![h:100px](images/devices/philips-hue-bulb.jpg) ![h:100px](images/devices/philips-hue-plug.jpg) ![h:75](images/devices/xiaomi-smart-plug.jpg) 
 
@@ -28,7 +28,7 @@ theme: default
 
 ---
 
-## Probléme
+## Problématique actuelle
 
 ![h:150](images/piege.jpg)
 
@@ -42,11 +42,12 @@ Scénario classique
 
 ---
 
-## Solutions
+## Solutions : l'open source bien sûr
 
-Il existe des solutions open source pour atteindre le même résultat.
-Cependant, cela necessite de recourir à l'auto hébergement.
-_(mais c'est facile avec une raspberrypi ![h:32](images/logos/rpi.svg))_
+Il existe de très nombreuses solutions open source pour atteindre le même résultat.
+
+Cela necessite de recourir à l'auto hébergement,
+mais c'est facile avec une raspberrypi ![h:32](images/logos/rpi.svg))
 
 ---
 
@@ -154,9 +155,9 @@ Il peut être intégré à homeassistant pour encore plus de facilité.
 
 # Liens
 
+* Clé USB zigbee Zigate : https://zigate.fr
 * Clé USB zigbee Slaesh : https://slae.sh/projects/cc2652
 * Zigbee2mqtt : https://zigbee2mqtt
 * MQTT : https://mqtt.org
 * Mosquitto : https://mosquitto.org
 * Homeassistant : https://homeassistant.io
-* Clé USB zigbee Zigate : https://zigate.fr
