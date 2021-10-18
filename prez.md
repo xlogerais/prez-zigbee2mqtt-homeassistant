@@ -6,19 +6,34 @@ theme: default
 #    color: white;
 #    background-color: #223344;
 #  }
-header: 'La domotique sans les pièges du cloud'
-footer: 'T@Znosaure - 20 Octobre 2021'
+#header: 'La domotique sans les pièges du cloud'
+#footer: 'T@Znosaure - 20 Octobre 2021'
 
 ---
 
-# La domotique sans les pièges du cloud
+# <!-- fit --> La domotique sans les pièges du cloud
 
 ---
 
-## Problématique
+## Domotique
+
+* Pour controller ![h:100px](images/devices/philips-hue-bulb.jpg) ![h:100px](images/devices/philips-hue-plug.jpg) ![h:75](images/devices/xiaomi-smart-plug.jpg) 
+
+* Pour capter/mesurer ![h:75](images/devices/aqara-temperature-sensor.jpg) ![h:75](images/devices/aqara-motion-sensor.jpg) ![h:75](images/devices/sonoff-temperature-sensor.jpg) ![h:75](images/devices/sonoff-motion-sensor.jpg)
+
+* Pour automatiser/sécuriser
+  - fermer automatiquement les volets quand la nuit tombe
+  - allumer/éteindre automatiquement les lampes d'un couloir quand un mouvement est détecté
+  - avertir qu'une porte/fenêtre est ouverte quand je quitte la maison ...
+
+---
+
+## Probléme
+
+![h:150](images/piege.jpg)
 
 De nos jours, les vendeurs de solutions IoT proposent des produits qui utilisent systématiquement le cloud pour le traitement des données.
-Cela représente évidement un risque pour vos données personelles.
+Cela représente évidement un risque pour nos données personelles.
 
 ---
 Scénario classique
@@ -29,54 +44,84 @@ Scénario classique
 
 ## Solutions
 
-Il existe des solutions open source pour atteindre le même résultat
+Il existe des solutions open source pour atteindre le même résultat.
+Cependant, cela necessite de recourir à l'auto hébergement.
+_(mais c'est facile avec une raspberrypi ![h:32](images/logos/rpi.svg))_
 
 ---
+
 Scénario en autohébergement
 
 ![height:400px](images/iot-selfhosted.drawio.svg)
 
 ---
 
-## Solution détaillée
+## Cas concret
+
+Piloter des objets zigbee à partir de logiciels opensource.
+
+--- 
+
+## Mise en oeuvre
 
 ![height:200px center](images/solution-auto-hebergee.drawio.svg)
 
-* Homeassistant : le serveur domotique
-* MQTT : un bus d'échange de message simple conçu pour l'IoT
-* Zigbee2MQTT : un bridge entre le réseau ZigBee et le serveur MQTT
-* USB stick with zStack firmware
+* Radio : USB stick with zStack firmware (Texas Instruments CC2531)
+* Bridge : Zigbee2MQTT, assure la liaison entre le réseau ZigBee et le serveur MQTT
+* Bus MQTT : Mosquitto, une implémentation opensource d'un broker MQTT
+* Serveur domotique : Homeassistant
 
 ---
 
-# Homeassistant
+![h:75](images/logos/zigbee.png)
 
-![height:450px](images/screenshots/homeassistant-demo.png)
+_from wikipedia.org_
+>ZigBee est un protocole de haut niveau permettant la communication d'équipements personnels ou domestiques équipés de petits émetteurs radios à faible consommation ; il est basé sur la norme IEEE 802.15.4 pour les réseaux à dimension personnelle (Wireless Personal Area Networks : WPAN).
 
 ---
 
-# Zigbee2mqtt
+![h:75](images/logos/zigbee.png)
+
+### Périphériques
+
+Ampoules ![h:125](images/devices/xiaomi-aqara-bulb.jpg)
+Capteurs de température/humidité/pression ![h:100](images/devices/aqara-temperature-sensor.jpg)
+Capteurs de mouvement/luminosité ![h:175](images/devices/xiaomi-aqara-motion-sensor.jpg)
+
+---
+
+![h:75](images/logos/zigbee.png)
+
+### Passerelles
+
+Zigate ![height:100px](images/gateways/zigate.jpg)
+
+Clé USB générique CC2531 ![height:150px](images/gateways/cc2531.jpg) ou CC2652 ![height:150px](images/gateways/cc2652.jpg)
+
+---
+
+# ![h:48](images/logos/zigbee2mqtt.svg) Zigbee2mqtt
 
 _Page d'accueil_
 ![height:450px](images/screenshots/zigbee2mqtt-home.png)
 
 ---
 
-# Zigbee2mqtt
-
-_Tableau de bord_
-![height:450px](images/screenshots/zigbee2mqtt-dashboard.png)
-
----
-
-# Zigbee2mqtt
+# ![h:48](images/logos/zigbee2mqtt.svg) Zigbee2mqtt
 
 _Carte du réseau_
 ![height:450px](images/screenshots/zigbee2mqtt-networkmap.png)
 
 ---
 
-# MQTT
+# ![h:48](images/logos/zigbee2mqtt.svg) Zigbee2mqtt
+
+_Tableau de bord_
+![height:450px](images/screenshots/zigbee2mqtt-dashboard.png)
+
+---
+
+![h:64](images/logos/mqtt.svg)
 ## Définition
 
 _from wikipedia.org_
@@ -87,24 +132,31 @@ _from mosquitto.org_
 
 ---
 
-# MQTT
+![h:64](images/logos/mqtt.svg)
+
 ## Implémentation opensource
-### Mosquitto
+![h:128](images/logos/mosquitto.png)
 
 _from mosquitto.org_
 >mosquitto — an MQTT broker
 
+Il s'agit d'un simple démon tournant sous GNU/Linux.
+Il est très facile à installer et configurer.
+Il peut être intégré à homeassistant pour encore plus de facilité.
+
 ---
 
-# ZigBee
+# ![h:48](images/logos/homeassistant.svg) Homeassistant
 
-_from wikipedia.org_
->ZigBee est un protocole de haut niveau permettant la communication d'équipements personnels ou domestiques équipés de petits émetteurs radios à faible consommation ; il est basé sur la norme IEEE 802.15.4 pour les réseaux à dimension personnelle (Wireless Personal Area Networks : WPAN).
+![height:450px](images/screenshots/homeassistant-demo.png) ![height:450px](images/screenshots/homeassistant-mobile.jpg)
 
 ---
 
 # Liens
 
-* Homeassistant : https://homeassistant.io
-* Mosquitto : https://mosquitto.org
+* Clé USB zigbee Slaesh : https://slae.sh/projects/cc2652
 * Zigbee2mqtt : https://zigbee2mqtt
+* MQTT : https://mqtt.org
+* Mosquitto : https://mosquitto.org
+* Homeassistant : https://homeassistant.io
+* Clé USB zigbee Zigate : https://zigate.fr
