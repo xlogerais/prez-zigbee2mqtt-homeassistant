@@ -1,0 +1,36 @@
+name: homeassistant
+description: Homeassistant profile
+config:
+  user.user-data: |
+    #cloud-config
+
+    package_update: true
+    package_upgrade: true
+    packages:
+      - curl
+      - network-manager
+      - apparmor-utils
+      - jq
+
+    users:
+      - name: homeassistant
+        passwd: "$6$EAyfFDB8HnBsdUoI$79trY41nWyzhV1Z4lZPPoIt6dfpgRNgkyWTozP7jmZg06javJ5wbZWl8w77Qnpzil6ivvogbZo.xB3ciaezba0"
+        shell: /bin/bash
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        lock_passwd: false
+    ssh_pwauth: yes
+
+    runcmd:
+      - touch /.dockerenv
+      - curl https://get.docker.com | sh
+      - mkdir /etc/systemd/system/docker.service.d/
+      - /bin/echo -e "[Service]\nExecStart=\nExecStart=/usr/bin/dockerd --containerd=/run/containerd/containerd.sock -H fd:// -H tcp://0.0.0.0:2375" > /etc/systemd/system/docker.service.d/override.conf
+      - systemctl daemon-reload
+      - systemctl restart docker.service
+      - curl -v -L -o /root/installer.sh https://raw.githubusercontent.com/home-assistant/supervised-installer/master/installer.sh
+      - bash -c "yes | bash /root/installer.sh"
+devices:
+  config:
+    source: cloud-init:config
+    type: disk
+used_by: []

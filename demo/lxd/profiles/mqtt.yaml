@@ -1,0 +1,20 @@
+name: mqtt
+description: LXD profile for MQTT broker (mosquitto)
+config:
+  user.user-data: |
+    #cloud-config
+    timezone: Europe/Paris
+    locale: fr_FR.UTF-8
+    package_update: true
+    package_upgrade: true
+    packages:
+      - mosquitto
+      - mosquitto-clients
+    users:
+      - name: mqtt
+        passwd: "$6$ffr58dRGsd98iyh4$DO.7mGzk8JIHEBaPZUOkYo8WvMu8KB5p0xjB14mFNvyATNPctqUnTIoKZce.ip/.a30r3abvGdfuvmAarHdcu."
+        shell: /bin/bash
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        lock_passwd: false
+devices: {}
+used_by: []

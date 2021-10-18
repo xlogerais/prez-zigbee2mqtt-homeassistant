@@ -1,0 +1,33 @@
+name: zigbee2mqtt
+description: LXD profile for Zigbee2mqtt
+config:
+  # raw.lxc: |
+  #   lxc.cgroup.devices.allow=c 166 0
+  user.user-data: |
+    #cloud-config
+    timezone: Europe/Paris
+    locale: fr_FR.UTF-8
+    package_upgrade: true
+    packages:
+      - curl
+    users:
+      - name: zigbee2mqtt
+        passwd: "$6$OHdD8XpuypntTsMF$vujimCgxLAxJG1m1V5bgocstBYDA3Z0zHPVBURmu01Bcx9YTm7r55ELt05t4oiD5RCV4mbQhafDRBGhGQIPW21"
+        shell: /bin/bash
+        groups: dialout
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        lock_passwd: false
+    runcmd:
+      - curl -sL https://deb.nodesource.com/setup_14.x | bash
+      - apt install -y nodejs git make g++ gcc
+      - git clone https://github.com/Koenkk/zigbee2mqtt.git /opt/zigbee2mqtt
+      - chown -R zigbee2mqtt:zigbee2mqtt /opt/zigbee2mqtt
+      - sudo --user zigbee2mqtt --set-home --login bash -c "cd /opt/zigbee2mqtt && npm clean-install"
+
+devices:
+  cc2531:
+    type: unix-char
+    path: /dev/ttyACM0
+    mode: "0666"
+    gid: "20" # dialout
+used_by: []

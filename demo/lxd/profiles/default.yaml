@@ -1,0 +1,14 @@
+name: default
+description: Default LXD profile
+config: {}
+devices:
+  root:
+    path: /
+    pool: default
+    type: disk
+  eth0:
+    name: eth0
+    nictype: bridged
+    parent: demo
+    type: nic
+used_by: []
